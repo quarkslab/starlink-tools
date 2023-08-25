@@ -1,0 +1,103 @@
+<!-- 
+    Copyright 2023 Quarkslab
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+
+<html>
+    <head>
+        <title>
+            Slate Sniffer
+        </title>
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css" />
+        <link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/3.3.2/css/fixedHeader.dataTables.min.css" />        
+        <style>
+            .status-container {
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-start;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .columns {
+                display: grid;
+                grid-template-columns: repeat(auto-fill,minmax(400px, 1fr));
+                margin-bottom: 10px;
+            }
+
+            .changed {
+                font-weight: bold;
+                color: darkgreen;
+            }
+
+            .column-changed {
+                color: darkred;
+                font-weight: bold;
+            }
+
+            tr > td:first-child {
+                font-weight: bold;
+            }
+
+            .title {
+                display: flex;
+                align-items: center;
+                gap: 5px;
+            }
+        </style>
+    </head>    
+    <body>
+        <h2 class="title"><button onclick="location.href = '/'">🡐</button> Service <span id="service-name"></span></h2>
+        <div class="status-container">
+            <div>
+                Status: <span id="status"></span>
+            </div>
+            <button id="status-button"></button>
+            <button onclick="window.scrollTo(0, document.body.scrollHeight);">Scroll to bottom</button>
+        </div>
+        <div>
+            <h4>Choose columns visibility</h4>
+            <div id="columns-chooser" class="columns"></div>
+            <button onclick="allColumns(true)">Select All</button>
+            <button onclick="allColumns(false)">Deselect All</button>
+            <button onclick="onlyChangedColumns()">Select only changed columns</button>
+        </div>
+        <br>
+        <br>
+        
+        <button id="btn-inject">Inject a message</button>
+
+        <div class="legend">
+            <h4>Legend:</h4>
+            <ul>
+                <li><div class="changed">Value has changed w.r.t. the previous message</div></li>
+                <li><div class="column-changed">Column contains at least a value that has changed</div></li>
+            </ul>
+        </div>
+
+        <table id="table-service" class="display" style="margin: 0 !important;"></table>
+        <button onclick="window.scrollTo(0, 0)">Scroll to top</button>
+        <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+        <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
+        <script src="https://cdn.datatables.net/fixedheader/3.3.2/js/dataTables.fixedHeader.min.js"></script>
+        <script src="./index.js"></script>
+        <script>
+            const params = new URLSearchParams(window.location.search);
+            const service_name = params.get('s');
+            if (service_name !== undefined) {
+                displayService(service_name);
+            }
+        </script>
+    </body>
+</html>
